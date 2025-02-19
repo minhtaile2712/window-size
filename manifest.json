@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Window Size",
+  "version": "1.0",
+
+  "description": "Extension to view, set window size",
+
+  "icons": {
+    "128": "default-icon.png"
+  },
+  "action": {
+    "default_popup": "default-popup.html",
+    "default_icon": "default-icon.png"
+  }
+}
