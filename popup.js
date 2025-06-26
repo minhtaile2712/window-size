@@ -13,11 +13,12 @@ const windowSizes = {
   "1280x800": { width: 1280, height: 800 },
   "1440x900": { width: 1440, height: 900 },
   "1536x960": { width: 1536, height: 960 },
-  // "1920x1080": { width: 1920, height: 1080 },
-  // "1920x1200": { width: 1920, height: 1200 },
+  "1920x1200": { width: 1920, height: 1200 },
 };
 
 document.getElementById("size-select").addEventListener("change", (event) => {
+  if (event.target.value == "current") return;
+
   chrome.windows.getCurrent((window) => {
     chrome.windows.update(window.id, {
       width: windowSizes[event.target.value].width + offset,
