@@ -8,6 +8,8 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 });
 
 const windowSizes = {
+  "724x*": { width: 724 },
+  "1024x*": { width: 1024 },
   "800x960": { width: 800, height: 960 },
   "960x600": { width: 960, height: 600 },
   "1280x800": { width: 1280, height: 800 },
@@ -16,13 +18,15 @@ const windowSizes = {
   "1920x1200": { width: 1920, height: 1200 },
 };
 
-document.getElementById("size-select").addEventListener("change", (event) => {
+document.getElementById("size-select").addEventListener("change", async (event) => {
   if (event.target.value == "current") return;
 
-  chrome.windows.getCurrent((window) => {
-    chrome.windows.update(window.id, {
-      width: windowSizes[event.target.value].width + offset,
-      height: windowSizes[event.target.value].height + offset,
-    });
-  });
+  const windowSize = windowSizes[event.target.value];
+
+  const window = await chrome.windows.getCurrent();
+
+  const updateInfo = { width: windowSize.width + offset };
+  if (windowSize.height) updateInfo.height = windowSize.height + offset;
+
+  chrome.windows.update(window.id, updateInfo);
 });
