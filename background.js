@@ -9,10 +9,12 @@ chrome.tabs.onActivated.addListener(async ({ tabId, windowId }) => {
 });
 
 async function updateBadge(tabId, tabUrl, window) {
+  const { os } = await chrome.runtime.getPlatformInfo();
+  const offset = os === "win" ? 16 : 32; // "win", "mac", "linux", "android", "cros", "openbsd"
   let width;
   if (!tabUrl || !tabUrl.startsWith("http")) {
     width = window.width;
-    if (window.state !== "maximized" && window.state !== "fullscreen") width -= 32;
+    if (window.state !== "maximized" && window.state !== "fullscreen") width -= offset;
   } else {
     const [{ result }] = await chrome.scripting.executeScript({ target: { tabId }, func: () => window.innerWidth });
     width = result;
