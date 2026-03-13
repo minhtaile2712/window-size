@@ -6,10 +6,16 @@
   "description": "Extension to view, set window size",
 
   "icons": {
-    "128": "default-icon.png"
+    "16": "images/aspect_ratio_16dp_1F1F1F_FILL0_wght400_GRAD0_opsz20.png",
+    "32": "images/aspect_ratio_32dp_1F1F1F_FILL0_wght400_GRAD0_opsz40.png",
+    "48": "images/aspect_ratio_48dp_1F1F1F_FILL0_wght400_GRAD0_opsz48.png",
+    "128": "images/aspect_ratio_128dp_1F1F1F_FILL0_wght400_GRAD0_opsz48.png"
   },
   "action": {
     "default_popup": "default-popup.html",
-    "default_icon": "default-icon.png"
+    "default_icon": {
+      "16": "images/aspect_ratio_16dp_1F1F1F_FILL0_wght400_GRAD0_opsz20.png",
+      "32": "images/aspect_ratio_32dp_1F1F1F_FILL0_wght400_GRAD0_opsz40.png"
+    }
   }
 }
