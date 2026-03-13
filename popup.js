@@ -8,7 +8,6 @@ const sizePresets = [
   { label: "724xAny", width: 724 },
   { label: "1024xAny", width: 1024 },
   { label: "1040xAny", width: 1040 },
-  { label: "800x960", width: 800, height: 960 },
   { label: "960x600", width: 960, height: 600 },
   { label: "1280x800", width: 1280, height: 800 },
   { label: "1440x900", width: 1440, height: 900 },
