@@ -17,5 +17,10 @@
       "16": "images/aspect_ratio_16dp_1F1F1F_FILL0_wght400_GRAD0_opsz20.png",
       "32": "images/aspect_ratio_32dp_1F1F1F_FILL0_wght400_GRAD0_opsz40.png"
     }
-  }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["scripting"],
+  "host_permissions": ["<all_urls>"]
 }

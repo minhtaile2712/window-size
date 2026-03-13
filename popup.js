@@ -1,8 +1,11 @@
-const offset = 16;
+const offset = 32;
 
-chrome.windows.getCurrent(
-  (w) => (document.getElementById("size").textContent = `${w.width - offset}x${w.height - offset}`)
-);
+chrome.windows.getCurrent({}, async (w) => {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  const width = await chrome.action.getBadgeText({ tabId: tab.id });
+  const height = w.height - offset;
+  document.getElementById("size").textContent = `${width}x${height}`;
+});
 
 const sizePresets = [
   { label: "724xAny", width: 724 },
