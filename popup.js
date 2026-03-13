@@ -7,7 +7,9 @@
 
   const offset = os === "win" ? 16 : 32;
   const width = await chrome.action.getBadgeText({ tabId: tab.id });
-  document.getElementById("size").textContent = `${width}x${win.height - offset}`;
+  let height = win.height - 8;
+  if (win.state == "maximized" || win.state == "fullscreen") height -= 8;
+  document.getElementById("size").textContent = `${width}x${height}`;
 
   const sizePresets = [
     { label: "724xAny", width: 724 },
