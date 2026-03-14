@@ -5,7 +5,6 @@
     chrome.tabs.query({ active: true, currentWindow: true }),
   ]);
 
-  const offset = os === "win" ? 16 : 32;
   const width = await chrome.action.getBadgeText({ tabId: tab.id });
   let height = win.height;
   if (os === "win") {
@@ -31,8 +30,8 @@
     btn.textContent = label;
     btn.addEventListener("click", () => {
       chrome.windows.update(win.id, {
-        width: width + offset,
-        ...(height && { height: height + offset }),
+        width: width + (os === "win" ? 16 : 32),
+        ...(height && { height: height + (os === "win" ? 8 : 32) }),
       });
     });
     container.appendChild(btn);
