@@ -16,9 +16,9 @@
   } else {
     const [{ result }] = await chrome.scripting.executeScript({
       target: { tabId: tab.id },
-      func: () => window.innerHeight,
+      func: () => ({ iH: window.innerHeight, oH: window.outerHeight }),
     });
-    height = result + 87;
+    height = result.oH - result.iH > 100 ? result.iH + 87 : result.iH + 28;
   }
 
   document.getElementById("size").textContent = `${width}x${height}`;
