@@ -18,7 +18,9 @@
       target: { tabId: tab.id },
       func: () => ({ iH: window.innerHeight, oH: window.outerHeight }),
     });
-    height = result.oH - result.iH > 100 ? result.iH + 87 : result.iH + 28;
+    let delta = result.oH - result.iH;
+    if (delta === 70 || delta === 48 || delta === 28) height = result.iH + 28;
+    else if (delta === 129 || delta === 107 || delta === 87) height = result.iH + 87;
   }
 
   document.getElementById("size").textContent = `${width}x${height}`;
