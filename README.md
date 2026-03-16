@@ -35,3 +35,29 @@ Windows 11:
 
 - Width: regular/special, floating/snapped: Snipping Tool-2 .
 - Height: regular/special, floating/snapped: Snipping Tool-1.
+
+```
+floating:
+true 960x540 => display 960x540 => 960 992 453 582
+width=inner=outer-32, height=inner+87=outer-42
+snapped:
+true 960x540 => display 960x518 => 960 980 453 560
+width=inner=outer-20, height=inner+87=outer-20
+
+
+floating: inner+129=outer
+snapped: inner+107=outer
+
+960x599 => 582 512 70 floating
+540=582-42=512+28
+
+960x599 => 560 512 48 snapped
+540=560-20=512+28
+
+
+960x540 => 582 453 129 floating
+540=582-42=453+87
+
+960x540 => 560 453 107 snapped
+540=560-20=453+87
+```
