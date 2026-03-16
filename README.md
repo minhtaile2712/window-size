@@ -25,25 +25,29 @@ GET on Debian 13 KDE:
   - floating, special: 0.
   - snapped, regular: 0.
   - snapped, special: -12.
-
 - Height:
   - floating, regular: 0.
   - floating, special: 0.
   - snapped, regular: -22.
   - snapped, special: -22.
 
-SET on Debian 13 KDE: Width: 0, Height: 0:
+SET on Debian 13 KDE: Width: 0, Height: 0.
 
-On Windows 11:
+GET on Windows 11:
 
 - Width:
-  - floating, regular: ?.
-  - floating, special: ?.
-  - snapped, regular: ?.
-  - snapped, special: ?.
-
+  - floating/snapped, regular:
+    -2 compared to Snipping Tool,
+    0 compared to howbigismybrowser.
+  - floating/snapped, special:
+    -2 compared to Snipping Tool,
+    0 compared to howbigismybrowser.
 - Height:
-  - floating, regular: ?.
-  - floating, special: ?.
-  - snapped, regular: ?.
-  - snapped, special: ?.
+  - floating/snapped, regular:
+    -1 compared to Snipping Tool,
+    +87 compared to howbigismybrowser.
+  - floating/snapped, special:
+    -1 compared to Snipping Tool,
+    +87 compared to howbigismybrowser.
+
+SET on Windows 11: Width: 0, Height: 0.
