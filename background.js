@@ -13,8 +13,9 @@ async function updateBadge(tabId, tabUrl, win) {
   let width;
   if (!tabUrl || !tabUrl.startsWith("http")) {
     width = win.width;
-    if (os === "win" && (win.state === "normal" || win.state === "maximized")) width -= 16;
-    if (os !== "win" && win.state === "normal") width -= 32;
+    if (os === "win") {
+      if (win.state === "normal" || win.state === "maximized") width -= 16;
+    } else if (win.state === "normal") width -= 32;
     // console.log("special", win.state, win.width, width);
   } else {
     const [{ result }] = await chrome.scripting.executeScript({ target: { tabId }, func: () => window.innerWidth });

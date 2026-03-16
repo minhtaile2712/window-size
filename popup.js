@@ -9,8 +9,9 @@
   let height = win.height;
   if (os === "win") {
     height -= 8;
-    if (win.state == "maximized" || win.state == "fullscreen") height -= 8;
-  }
+    if (win.state === "maximized" || win.state === "fullscreen") height -= 8;
+  } else if (win.state === "normal") height -= 42;
+
   document.getElementById("size").textContent = `${width}x${height}`;
 
   const sizePresets = [
