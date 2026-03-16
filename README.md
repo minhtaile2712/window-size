@@ -18,36 +18,20 @@ This extension is used to view/set Chrome window's size.
 
 ## Project status
 
-GET on Debian 13 KDE:
+Debian 13 KDE:
 
 - Width:
-  - floating, regular: 0.
-  - floating, special: 0.
-  - snapped, regular: 0.
-  - snapped, special: -12.
+  - regular, floating/snapped: 0.
+  - special:
+    - floating: 0.
+    - snapped: howbigismybrowser-12(-12).
 - Height:
-  - floating, regular: 0.
-  - floating, special: 0.
-  - snapped, regular: -22.
-  - snapped, special: -22.
+  - regular, floating/snapped: 0.
+  - special:
+    - floating: 0.
+    - snapped: howbigismybrowser+65(-22).
 
-SET on Debian 13 KDE: Width: 0, Height: 0.
+Windows 11:
 
-GET on Windows 11:
-
-- Width:
-  - floating/snapped, regular:
-    -2 compared to Snipping Tool,
-    0 compared to howbigismybrowser.
-  - floating/snapped, special:
-    -2 compared to Snipping Tool,
-    0 compared to howbigismybrowser.
-- Height:
-  - floating/snapped, regular:
-    -1 compared to Snipping Tool,
-    +87 compared to howbigismybrowser.
-  - floating/snapped, special:
-    -1 compared to Snipping Tool,
-    +87 compared to howbigismybrowser.
-
-SET on Windows 11: Width: 0, Height: 0.
+- Width: regular/special, floating/snapped: Snipping Tool-2 .
+- Height: regular/special, floating/snapped: Snipping Tool-1.
