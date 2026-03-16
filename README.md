@@ -60,4 +60,7 @@ snapped: inner+107=outer
 
 960x540 => 560 453 107 snapped
 540=560-20=453+87
+
+KDE app gap height: 28
+KDE normal gap height: 87
 ```
