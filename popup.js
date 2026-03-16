@@ -6,11 +6,20 @@
   ]);
 
   const width = await chrome.action.getBadgeText({ tabId: tab.id });
-  let height = win.height;
-  if (os === "win") {
-    height -= 8;
-    if (win.state === "maximized" || win.state === "fullscreen") height -= 8;
-  } else if (win.state === "normal") height -= 42;
+  let height;
+  if (!tab.url || !tab.url.startsWith("http")) {
+    height = win.height;
+    if (os === "win") {
+      height -= 8;
+      if (win.state === "maximized" || win.state === "fullscreen") height -= 8;
+    } else if (win.state === "normal") height -= 42;
+  } else {
+    const [{ result }] = await chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      func: () => window.innerHeight,
+    });
+    height = result + 87;
+  }
 
   document.getElementById("size").textContent = `${width}x${height}`;
 
