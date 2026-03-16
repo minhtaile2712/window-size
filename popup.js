@@ -32,7 +32,7 @@
     btn.addEventListener("click", () => {
       chrome.windows.update(win.id, {
         width: width + (os === "win" ? 16 : 32),
-        ...(height && { height: height + (os === "win" ? 8 : 32) }),
+        ...(height && { height: height + (os === "win" ? 8 : 42) }),
       });
     });
     container.appendChild(btn);
