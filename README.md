@@ -63,4 +63,6 @@ snapped: inner+107=outer
 
 KDE app gap height: 28
 KDE normal gap height: 87
+
+Windows app gap height: 26
 ```

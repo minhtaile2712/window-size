@@ -21,6 +21,7 @@
     let delta = result.oH - result.iH;
     if (delta === 70 || delta === 48 || delta === 28) height = result.iH + 28;
     else if (delta === 129 || delta === 107 || delta === 87) height = result.iH + 87;
+    else if (delta === 26) height = result.iH + 26;
   }
 
   document.getElementById("size").textContent = `${width}x${height}`;
