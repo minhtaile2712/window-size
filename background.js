@@ -11,16 +11,17 @@ chrome.tabs.onActivated.addListener(async ({ tabId, windowId }) => {
 async function updateBadge(tabId, tabUrl, win) {
   const { os } = await chrome.runtime.getPlatformInfo();
   let width;
+  console.log("win.width", win.width, "win.height", win.height);
   if (!tabUrl || !tabUrl.startsWith("http")) {
     width = win.width;
     if (os === "win") {
       if (win.state === "normal" || win.state === "maximized") width -= 16;
     } else if (win.state === "normal") width -= 32;
-    // console.log("special", win.state, win.width, width);
   } else {
     const [{ result }] = await chrome.scripting.executeScript({ target: { tabId }, func: () => window.innerWidth });
     width = result;
-    // console.log("regular", win.state, win.width, width);
+    console.log("outerWidth", result.oW, "outerHeight", result.oH);
+    console.log("innerWidth", result.iW, "innerHeight", result.iH);
   }
   await chrome.action.setBadgeText({ text: width.toString(), tabId });
 }

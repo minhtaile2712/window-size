@@ -7,6 +7,7 @@
 
   const width = await chrome.action.getBadgeText({ tabId: tab.id });
   let height;
+  console.log("win.width", win.width, "win.height", win.height);
   if (!tab.url || !tab.url.startsWith("http")) {
     height = win.height;
     if (os === "win") {
@@ -16,21 +17,22 @@
   } else {
     const [{ result }] = await chrome.scripting.executeScript({
       target: { tabId: tab.id },
-      func: () => ({ iH: window.innerHeight, oH: window.outerHeight }),
+      func: () => ({ oH: window.outerHeigh, iH: window.innerHeight, oW: window.outerWidth, iW: window.innerWidth }),
     });
     let delta = result.oH - result.iH;
     if (delta === 70 || delta === 48 || delta === 28) height = result.iH + 28;
     else if (delta === 129 || delta === 107 || delta === 87) height = result.iH + 87;
     else if (delta === 26) height = result.iH + 26;
     else if (delta === 38) height = result.iH + 38;
+    console.log("outerWidth", result.oW, "outerHeight", result.oH);
+    console.log("innerWidth", result.iW, "innerHeight", result.iH);
   }
 
-  document.getElementById("size").textContent = `${width}x${height}`;
+  document.getElementById("outer-size").textContent = `${width}x${height}`;
 
   const sizePresets = [
     { label: "724xAny", width: 724 },
     { label: "1024xAny", width: 1024 },
-    { label: "1040xAny", width: 1040 },
     { label: "960x600", width: 960, height: 600 },
     { label: "1280x800", width: 1280, height: 800 },
     { label: "1440x900", width: 1440, height: 900 },
