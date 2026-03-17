@@ -22,7 +22,7 @@ async function updateBadge(tab, win) {
       target: { tabId: tab.id },
       func: () => ({ oW: window.outerWidth, oH: window.outerHeight, iW: window.innerWidth, iH: window.innerHeight }),
     });
-    width = result;
+    width = result.iW;
     console.log("outerWidth", result.oW, "outerHeight", result.oH);
     console.log("innerWidth", result.iW, "innerHeight", result.iH);
   }
