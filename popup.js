@@ -28,7 +28,7 @@
     });
     let delta = result.o[1] - result.i[1];
     if (delta === 70 || delta === 48 || delta === 28) height = result.i[1] + 28;
-    else if (delta === 129 || delta === 107 || delta === 87) height = result.i[1] + 87;
+    else if (delta === 129 || delta === 107 || delta === 87 || delta === 84) height = result.i[1] + 87;
     else if (delta === 26) height = result.i[1] + 26;
     else if (delta === 38) height = result.i[1] + 38;
     console.log("i", result.i[0], result.i[1]);
