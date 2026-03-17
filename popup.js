@@ -17,7 +17,7 @@
   } else {
     const [{ result }] = await chrome.scripting.executeScript({
       target: { tabId: tab.id },
-      func: () => ({ oH: window.outerHeigh, iH: window.innerHeight, oW: window.outerWidth, iW: window.innerWidth }),
+      func: () => ({ oW: window.outerWidth, oH: window.outerHeight, iW: window.innerWidth, iH: window.innerHeight }),
     });
     let delta = result.oH - result.iH;
     if (delta === 70 || delta === 48 || delta === 28) height = result.iH + 28;
