@@ -53,7 +53,7 @@ async function updateBadge(tab, win) {
     console.log("o", result.o[0], result.o[1]);
     console.log("sa", result.sa[0], result.sa[1]);
     console.log("s", result.s[0], result.s[1]);
-    console.log("dpr", result.dpr);
+    console.log("dpr", result.dpr); // ratio
   }
   await chrome.action.setBadgeText({ text: width.toString(), tabId: tab.id });
 }
