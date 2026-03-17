@@ -1,10 +1,17 @@
-chrome.windows.onBoundsChanged.addListener(async (win) => {
-  const [tab] = await chrome.tabs.query({ windowId: win.id, active: true });
+chrome.tabs.onActivated.addListener(async ({ tabId, windowId }) => {
+  const [tab, win] = await Promise.all([chrome.tabs.get(tabId), chrome.windows.get(windowId)]);
   await updateBadge(tab, win);
 });
 
-chrome.tabs.onActivated.addListener(async ({ tabId, windowId }) => {
-  const [tab, win] = await Promise.all([chrome.tabs.get(tabId), chrome.windows.get(windowId)]);
+chrome.tabs.onUpdated.addListener(async (_tabId, changeInfo, tab) => {
+  if (changeInfo.status === "complete") {
+    const win = await chrome.windows.get(tab.windowId);
+    await updateBadge(tab, win);
+  }
+});
+
+chrome.windows.onBoundsChanged.addListener(async (win) => {
+  const [tab] = await chrome.tabs.query({ windowId: win.id, active: true });
   await updateBadge(tab, win);
 });
 
