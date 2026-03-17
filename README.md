@@ -63,6 +63,7 @@ snapped: inner+107=outer
 
 KDE app gap height: 28
 KDE normal gap height: 87
+KDE 200% bookmarks bar height: 34
 
 Windows fullscreen app gap height: 26
 Windows normal/floating app gap height: 38

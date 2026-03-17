@@ -1,16 +1,19 @@
 chrome.tabs.onActivated.addListener(async ({ tabId, windowId }) => {
+  console.log("tab activated");
   const [tab, win] = await Promise.all([chrome.tabs.get(tabId), chrome.windows.get(windowId)]);
   await updateBadge(tab, win);
 });
 
 chrome.tabs.onUpdated.addListener(async (_tabId, changeInfo, tab) => {
   if (changeInfo.status === "complete") {
+    console.log("tab updated complete");
     const win = await chrome.windows.get(tab.windowId);
     await updateBadge(tab, win);
   }
 });
 
 chrome.windows.onBoundsChanged.addListener(async (win) => {
+  console.log("tab resized");
   const [tab] = await chrome.tabs.query({ windowId: win.id, active: true });
   await updateBadge(tab, win);
 });
@@ -18,6 +21,7 @@ chrome.windows.onBoundsChanged.addListener(async (win) => {
 async function updateBadge(tab, win) {
   const { os } = await chrome.runtime.getPlatformInfo();
   let width;
+  console.log("type", win.type); // normal/app
   console.log("w", win.width, win.height);
   if (!tab.url || !tab.url.startsWith("http")) {
     width = win.width;

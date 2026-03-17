@@ -7,6 +7,7 @@
 
   const width = await chrome.action.getBadgeText({ tabId: tab.id });
   let height;
+  console.log("type", win.type); // normal/app
   console.log("w", win.width, win.height);
   if (!tab.url || !tab.url.startsWith("http")) {
     height = win.height;
