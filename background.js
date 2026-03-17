@@ -11,7 +11,7 @@ chrome.tabs.onActivated.addListener(async ({ tabId, windowId }) => {
 async function updateBadge(tab, win) {
   const { os } = await chrome.runtime.getPlatformInfo();
   let width;
-  console.log("win.width", win.width, "win.height", win.height);
+  console.log("w", win.width, win.height);
   if (!tab.url || !tab.url.startsWith("http")) {
     width = win.width;
     if (os === "win") {
@@ -20,11 +20,20 @@ async function updateBadge(tab, win) {
   } else {
     const [{ result }] = await chrome.scripting.executeScript({
       target: { tabId: tab.id },
-      func: () => ({ oW: window.outerWidth, oH: window.outerHeight, iW: window.innerWidth, iH: window.innerHeight }),
+      func: () => ({
+        i: [window.innerWidth, window.innerHeight],
+        o: [window.outerWidth, window.outerHeight],
+        sa: [window.screen.availWidth, window.screen.availHeight],
+        s: [window.screen.width, window.screen.height],
+        dpr: window.devicePixelRatio,
+      }),
     });
-    width = result.iW;
-    console.log("outerWidth", result.oW, "outerHeight", result.oH);
-    console.log("innerWidth", result.iW, "innerHeight", result.iH);
+    width = result.i[0];
+    console.log("i", result.i[0], result.i[1]);
+    console.log("o", result.o[0], result.o[1]);
+    console.log("sa", result.sa[0], result.sa[1]);
+    console.log("s", result.s[0], result.s[1]);
+    console.log("dpr", result.dpr);
   }
   await chrome.action.setBadgeText({ text: width.toString(), tabId: tab.id });
 }

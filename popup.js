@@ -7,7 +7,7 @@
 
   const width = await chrome.action.getBadgeText({ tabId: tab.id });
   let height;
-  console.log("win.width", win.width, "win.height", win.height);
+  console.log("w", win.width, win.height);
   if (!tab.url || !tab.url.startsWith("http")) {
     height = win.height;
     if (os === "win") {
@@ -17,15 +17,24 @@
   } else {
     const [{ result }] = await chrome.scripting.executeScript({
       target: { tabId: tab.id },
-      func: () => ({ oW: window.outerWidth, oH: window.outerHeight, iW: window.innerWidth, iH: window.innerHeight }),
+      func: () => ({
+        i: [window.innerWidth, window.innerHeight],
+        o: [window.outerWidth, window.outerHeight],
+        sa: [window.screen.availWidth, window.screen.availHeight],
+        s: [window.screen.width, window.screen.height],
+        dpr: window.devicePixelRatio,
+      }),
     });
-    let delta = result.oH - result.iH;
-    if (delta === 70 || delta === 48 || delta === 28) height = result.iH + 28;
-    else if (delta === 129 || delta === 107 || delta === 87) height = result.iH + 87;
-    else if (delta === 26) height = result.iH + 26;
-    else if (delta === 38) height = result.iH + 38;
-    console.log("outerWidth", result.oW, "outerHeight", result.oH);
-    console.log("innerWidth", result.iW, "innerHeight", result.iH);
+    let delta = result.o[1] - result.i[1];
+    if (delta === 70 || delta === 48 || delta === 28) height = result.i[1] + 28;
+    else if (delta === 129 || delta === 107 || delta === 87) height = result.i[1] + 87;
+    else if (delta === 26) height = result.i[1] + 26;
+    else if (delta === 38) height = result.i[1] + 38;
+    console.log("i", result.i[0], result.i[1]);
+    console.log("o", result.o[0], result.o[1]);
+    console.log("sa", result.sa[0], result.sa[1]);
+    console.log("s", result.s[0], result.s[1]);
+    console.log("dpr", result.dpr);
   }
 
   document.getElementById("outer-size").textContent = `${width}x${height}`;
