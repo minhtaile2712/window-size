@@ -1,3 +1,12 @@
+chrome.runtime.onInstalled.addListener(async () => {
+  console.log("extension installed/updated");
+  const tabs = await chrome.tabs.query({ active: true });
+  for (const tab of tabs) {
+    const win = await chrome.windows.get(tab.windowId);
+    await updateBadge(tab, win);
+  }
+});
+
 chrome.tabs.onActivated.addListener(async ({ tabId, windowId }) => {
   console.log("tab activated");
   const [tab, win] = await Promise.all([chrome.tabs.get(tabId), chrome.windows.get(windowId)]);
@@ -14,7 +23,7 @@ chrome.tabs.onUpdated.addListener(async (_tabId, changeInfo, tab) => {
 
 chrome.windows.onBoundsChanged.addListener(async (win) => {
   console.log("tab resized");
-  const [tab] = await chrome.tabs.query({ windowId: win.id, active: true });
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   await updateBadge(tab, win);
 });
 
