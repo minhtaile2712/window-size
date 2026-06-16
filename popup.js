@@ -42,7 +42,7 @@
 
   const sizePresets = [
     { label: "724x485", width: 724, height: 485 },
-    { label: "1024xAny", width: 1024 },
+    { label: "768xAny", width: 768 },
     { label: "960x600", width: 960, height: 600 },
     { label: "1280x800", width: 1280, height: 800 },
     { label: "1440x900", width: 1440, height: 900 },
