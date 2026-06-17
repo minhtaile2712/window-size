@@ -41,7 +41,8 @@
   document.getElementById("outer-size").textContent = `${width}x${height}`;
 
   const sizePresets = [
-    { label: "724x485", width: 724, height: 485 },
+    // { label: "724x485", width: 724, height: 485 },
+    { label: "664x485", width: 664, height: 485 },
     { label: "768xAny", width: 768 },
     { label: "960x600", width: 960, height: 600 },
     { label: "1280x800", width: 1280, height: 800 },
