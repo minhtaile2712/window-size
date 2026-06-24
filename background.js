@@ -1,5 +1,6 @@
 chrome.runtime.onInstalled.addListener(async () => {
-  console.log("extension installed/updated");
+  console.log("Extension installed/reloaded!");
+
   const tabs = await chrome.tabs.query({ active: true });
   for (const tab of tabs) {
     const win = await chrome.windows.get(tab.windowId);
@@ -8,52 +9,132 @@ chrome.runtime.onInstalled.addListener(async () => {
 });
 
 chrome.tabs.onActivated.addListener(async ({ tabId, windowId }) => {
-  console.log("tab activated");
+  console.log("Tab activated!");
+
   const [tab, win] = await Promise.all([chrome.tabs.get(tabId), chrome.windows.get(windowId)]);
   await updateBadge(tab, win);
 });
 
+chrome.windows.onBoundsChanged.addListener(async (win) => {
+  console.log("Tab resized!");
+
+  const [tab] = await chrome.tabs.query({
+    active: true,
+    windowId: win.id,
+  });
+  await updateBadge(tab, win);
+});
+
 chrome.tabs.onUpdated.addListener(async (_tabId, changeInfo, tab) => {
-  if (changeInfo.status === "complete") {
-    console.log("tab updated complete");
+  if (changeInfo.status === "complete" && tab.active) {
+    console.log("Tab updating completed!");
+
     const win = await chrome.windows.get(tab.windowId);
     await updateBadge(tab, win);
   }
 });
 
-chrome.windows.onBoundsChanged.addListener(async (win) => {
-  console.log("tab resized");
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  await updateBadge(tab, win);
-});
-
 async function updateBadge(tab, win) {
+  console.log("chrome.windows.Window.type %c%s", "color: red", win.type); // 'normal', 'app'
+  console.log("chrome.windows.Window.width", win.width);
+  console.log("chrome.windows.Window.height", win.height);
+
+  let data = {
+    isNormalSite: !!tab.url?.startsWith("http"),
+  };
+  if (data.isNormalSite)
+    data = {
+      ...data,
+      ...(await executeScript()),
+    };
+
   const { os } = await chrome.runtime.getPlatformInfo();
-  let width;
-  console.log("type", win.type); // normal/app
-  console.log("w", win.width, win.height);
-  if (!tab.url || !tab.url.startsWith("http")) {
-    width = win.width;
+
+  if (data.isNormalSite) {
+    innerWidth = result["window.innerWidth"];
+    innerHeight = result["window.innerHeight"];
+
     if (os === "win") {
-      if (win.state === "normal" || win.state === "maximized") width -= 16;
-    } else if (win.state === "normal") width -= 32;
+      if (win.state === "normal") {
+        outerWidth = result["window.outerWidth"] - 16;
+        outerHeight = result["window.outerHeight"] - 8;
+        if (result["window.devicePixelRatio"] != 1) {
+          outerWidth += 2;
+        }
+      } else if (win.state === "maximized") {
+        outerWidth = result["window.outerWidth"];
+        outerHeight = result["window.outerHeight"];
+        if (result["window.devicePixelRatio"] != 1) {
+          outerWidth -= 2;
+          outerHeight -= 2;
+        }
+      }
+    } else {
+      if (win.state === "normal") {
+        outerWidth = result["window.outerWidth"];
+        outerHeight = result["window.outerHeight"];
+      } else if (win.state === "maximized") {
+        outerWidth = result["window.outerWidth"];
+        outerHeight = result["window.outerHeight"];
+      }
+    }
   } else {
-    const [{ result }] = await chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      func: () => ({
-        i: [window.innerWidth, window.innerHeight],
-        o: [window.outerWidth, window.outerHeight],
-        sa: [window.screen.availWidth, window.screen.availHeight],
-        s: [window.screen.width, window.screen.height],
-        dpr: window.devicePixelRatio,
-      }),
-    });
-    width = result.i[0];
-    console.log("i", result.i[0], result.i[1]);
-    console.log("o", result.o[0], result.o[1]);
-    console.log("sa", result.sa[0], result.sa[1]);
-    console.log("s", result.s[0], result.s[1]);
-    console.log("dpr", result.dpr); // ratio
+    if (os === "win") {
+      if (win.state === "normal") {
+        outerWidth = win.width - 16;
+        outerHeight = win.height - 8;
+        innerWidth = win.width - 16;
+        innerHeight = win.height - 95;
+      } else if (win.state === "maximized") {
+        outerWidth = win.width - 16;
+        outerHeight = win.height - 16;
+        innerWidth = win.width - 16;
+        innerHeight = win.height - 103;
+      }
+    } else {
+      if (win.state === "normal") {
+        outerWidth = win.width;
+        outerHeight = win.height;
+        innerWidth = win.width;
+        innerHeight = win.height;
+      } else if (win.state === "maximized") {
+        outerWidth = win.width;
+        outerHeight = win.height;
+        innerWidth = win.width;
+        innerHeight = win.height;
+      }
+    }
   }
-  await chrome.action.setBadgeText({ text: width.toString(), tabId: tab.id });
+
+  await chrome.storage.local.set({
+    [`tab_${tab.id}`]: {
+      outerWidth,
+      outerHeight,
+      innerWidth,
+      innerHeight,
+      ...(result || {}),
+    },
+  });
+
+  await chrome.action.setBadgeText({ text: innerWidth.toString(), tabId: tab.id });
+}
+
+// https://developer.chrome.com/docs/extensions/reference/api/scripting
+async function executeScript(tabId) {
+  return (
+    await chrome.scripting.executeScript({
+      target: { tabId },
+      func: () => ({
+        "window.outerWidth": window.outerWidth,
+        "window.outerHeight": window.outerHeight,
+        "window.innerWidth": window.innerWidth,
+        "window.innerHeight": window.innerHeight,
+        "window.screen.width": window.screen.width,
+        "window.screen.height": window.screen.height,
+        "window.screen.availWidth": window.screen.availWidth,
+        "window.screen.availHeight": window.screen.availHeight,
+        "window.devicePixelRatio": window.devicePixelRatio,
+      }),
+    })
+  )[0].result;
 }
